@@ -3,7 +3,7 @@
 
 
         <div class="card-movie"
-            v-for="(item, index) in movie"
+            v-for="(item, index) in trends"
             :key="index"
         >
             <h3>{{item.title}}</h3>
@@ -19,7 +19,10 @@
 export default {
     name: 'mainComponent',
     props: {
-        movie: Array
+        movie: Array,
+        trends: Array,
+        tvSeries: Array,
+        txtFromSelect: String
     }
 }
 </script>
@@ -27,7 +30,6 @@ export default {
 <style lang="scss" scoped>
     .card-container{
         width: 80%;
-        height: 500px;
         margin: 0 auto;
         border: 1px solid white;
         color: white;
@@ -37,6 +39,7 @@ export default {
         .card-movie{
             margin: 15px;
             border: 1px solid red;
+            width: calc(100% / 5)
         }
     }
 </style>

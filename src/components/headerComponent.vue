@@ -8,13 +8,13 @@
             <div class="searchbar">
                 <input type="text" placeholder="Search"
                     v-model.trim="textToSearch"
-                    @keyup.enter="$emit('searchMovie', textToSearch)"
+                    @keyup.enter="$emit('searchText', textToSearch)"
                 >
             </div>
 
 
             <div class="select">
-                <select >
+                <select v-model="selected" @change="$emit('selectMovieOrSerieTV', selected)">
                     <option disabled value selected>Seleziona cosa guardare</option>
                     <option >Movie</option>
                     <option >TV</option>
@@ -33,6 +33,7 @@ export default {
     data(){
         return{
             textToSearch: '',
+            selected: ''
         }
     }
 }

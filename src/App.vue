@@ -2,11 +2,15 @@
   <div id="app">
     
     <headerComponent 
-      @searchMovie="searchMovie" 
+      @searchText="searchMovieSerie" 
+      @selectMovieOrSerieTV='searchWithSelect'
     />
 
     <mainComponent 
-      :movie="filteredMovies"
+      :movie="arrayMovies"
+      :trends="arrayTrends"
+      :tvSeries="arrayTvSeries"
+      :txtFromSelect="textfromSelect"
     />
     
   </div>
@@ -27,52 +31,80 @@ export default {
   data(){
     
     return{
-      trendingMoviesURL: 'https://api.themoviedb.org/3/trending/all/day?api_key=7c7fba51d38f79e494fc734298af352a',
-      baseURL: 'https://api.themoviedb.org/3/search/movie/',
+      trendingAllURL: 'https://api.themoviedb.org/3/trending/all/day?api_key=7c7fba51d38f79e494fc734298af352a',
+      trendingMoviesURL: 'https://api.themoviedb.org/3/trending/movie/day?api_key=7c7fba51d38f79e494fc734298af352a',
+      trendingTvURL: 'https://api.themoviedb.org/3/trending/tv/day?api_key=7c7fba51d38f79e494fc734298af352a',
+
+      baseUrlMovie: 'https://api.themoviedb.org/3/search/movie/',
+      baseUrlTvSeries: 'https://api.themoviedb.org/3/search/tv',
       apiParams:{
         api_key: '7c7fba51d38f79e494fc734298af352a',
         language: 'it-IT',
         query: ''
       },
 
-      arrayTrendigMovies: [],
-      filteredMovies: [],
+      arrayMovies: [],
+      arrayTvSeries: [],
+      arrayTrends: [],
+      textFromSelect: ''
     }
   },
 
   /////////////////////////////////////////////////////////////////
 
   methods:{
-    printTrendingMovies(){
-      axios.get(this.trendingMoviesURL
+    printTrending(){
+      axios.get(this.trendingAllURL
       )
       .then(response => {
         console.log('risposta dall \'API', response.data.results);
-        this.filteredMovies = response.data.results;
-        console.log('trending movies: ', this.arrayTrendigMovies)
+        this.arrayTrends = response.data.results;
+        console.log('trending movies: ', this.arrayTrends)
       })
       .catch(error =>{
         console.log('errore nella richiesta api: ', error)
       })
     },
 
-    sendApiRequest(){
-      axios.get(this.baseURL,{
+    sendApiRequest(urlApi){
+      axios.get(urlApi,{
         params: this.apiParams
       })
       .then(response => {
         console.log('risposta dall \'API', response.data.results);
-        this.filteredMovies = response.data.results;
+        if(urlApi === this.baseUrlMovie) {
+          this.arrayMovies = response.data.results;
+        }
+        else if (urlApi === this.baseUrlTvSeries) {
+          this.arrayTvSeries = response.data.results;
+        }
+        else{
+          this.arrayTrends = response.data.results;
+        }
       })
       .catch(error =>{
         console.log('errore nella richiesta api: ', error)
       })
     },
 
-    searchMovie(textToSearch){
+    searchMovieSerie(textToSearch){
       this.apiParams.query = textToSearch;
-      console.log(textToSearch);
-      this.sendApiRequest(); 
+      console.log('text to search>>> ', textToSearch);
+      this.searchWithSelect(this.textFromSelect); 
+    },
+
+
+    searchWithSelect(dataFromSelectedComp){
+      this.textFromSelect = dataFromSelectedComp;
+      if(dataFromSelectedComp === 'Movie'){
+        this.sendApiRequest(this.trendingMovieURL)
+      }
+      else if(dataFromSelectedComp === 'TV'){
+        this.sendApiRequest(this.trendingTvURL)
+      }
+      else{
+        this.sendApiRequest(this.trendingAllURL)
+      }
     }
   },
 
@@ -81,15 +113,14 @@ export default {
   computed:{
     searchedMovie(){
       let movieSearched = this.response.data.results;
-      console.log('i film che sono stati cercati: ', movieSearched);
       return movieSearched
-    }
+    }  
   },
   
   /////////////////////////////////////////////////////////////////
 
   mounted(){
-    this.printTrendingMovies();
+    this.searchWithSelect('');
   }
 }
 </script>
