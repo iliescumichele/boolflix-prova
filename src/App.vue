@@ -1,18 +1,20 @@
 <template>
-  
+
     <HeaderComp 
-      @startSearch = "startSearchApp"
-    />
+    @startSearch = "startSearchApp"
+  />
+  <div class="container main-wrapper">
     <MainComp 
       v-if="movie.length > 0"
       titleCards = "FILM" :items="movie"
     />
     <MainComp 
-      v-if="serieTv.length > 0"
-      titleCards = "SERIE TV" :items="serieTv"
+      v-if="tv.length > 0"
+      titleCards = "SERIE TV" :items="tv"
     />
+  </div>
 
-    <h1 v-if="movie.length === 0 && serieTv.length > 0">Nessun risultato</h1>
+  <h1 v-if="movie.length === 0 && tv.length === 0">Nessun risultato</h1>
 
 </template>
 
@@ -30,15 +32,14 @@ export default {
 
   data() {
     return {
-      apiUrlMovie: 'https://api.themoviedb.org/3/search/movie',
-      apiUrlSeries: 'https://api.themoviedb.org/3/search/tv',
+      apiUrl: 'https://api.themoviedb.org/3/search/',
       apiParams: {
         api_key: '51a24be7274edb77373ac50e41995b10',
         language: 'it-IT',
         query: ''
       },
       movie: [],
-      serieTv: [],
+      tv: [],
       
     }
   },
@@ -55,44 +56,41 @@ export default {
       axios.get( "https://api.themoviedb.org/3/trending/tv/week?api_key=" + this.apiParams.api_key)
       .then( res=> {
         console.log('TRENDING SERIES:', res.data);
-        this.serieTv = res.data.results;
+        this.tv = res.data.results;
       })
     },
 
-    getApiMovie(){
-      axios.get(this.apiUrlMovie, {
+    getApi(type){
+
+      axios.get(this.apiUrl + type, {
           params: this.apiParams     
         }
       )
 
       .then(res => {
-        this.movie = res.data.results
+        //if(type === 'movie' || type !== 'all') this.tv = [];
+        //else if( type === 'tv' || type !== 'all') this.movie = [];
+        this[type] = res.data.results
       })
 
       .catch(err => {
         console.log(err);
       })
     },
-    getApiSeries(){
-      axios.get(this.apiUrlSeries, {
-          params: this.apiParams     
-        }
-      )
+    
 
-      .then(res => {
-        this.serieTv = res.data.results
-      })
-
-      .catch(err => {
-        console.log(err);
-      })
-    },
-
-    startSearchApp(titleToSearch){
+    startSearchApp(titleToSearch, typeToSearch){
+      this.movie = [];
+      this.tv = [];
       this.apiParams.query = titleToSearch;
       if (titleToSearch.length > 0){
-        this.getApiMovie();
-        this.getApiSeries();
+        if(typeToSearch === 'all'){
+          this.getApi('movie');
+          this.getApi('tv');
+        }
+        else {
+          this.getApi(typeToSearch);
+        }
       }
       else this.getTrendingMovies();
     }
@@ -107,6 +105,18 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  @import '~bootstrap/scss/bootstrap.scss';
+  @import '~@fontsource/bebas-neue/index.css';
+  @import '~@fortawesome/fontawesome-free/css/all.min.css';
+  @import './assets/style/vars';
 
+  body{
+    font-family: "Bebas Neue", cursive;
+    color: $font-color;
+    background-color: $bg-color;
+    .main-wrapper{
+      padding-top: 90px;
+    }
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="my-card">
         <h3>{{cardData.original_title || cardData.original_name}}</h3>
         <h3>{{ cardData.title || cardData.name}}</h3>
 
