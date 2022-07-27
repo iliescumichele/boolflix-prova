@@ -1,13 +1,21 @@
 <template>
   <header>
-    <header>header</header>
+    <header>
+        <input @keyup.enter=" $emit( 'startSearch', titleToSearch )" v-model.trim="titleToSearch" type="text">
+    </header>
   </header>
 </template>
 
 <script>
 export default {
-    name: 'HeaderComp'
+    name: 'HeaderComp',
+    data() {
+        return {
+            titleToSearch: ''
+        }
+    },
 }
+
 </script>
 
 <style lang="scss" scoped>

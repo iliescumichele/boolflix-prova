@@ -1,6 +1,8 @@
 <template>
   
-    <HeaderComp />
+    <HeaderComp 
+      @startSearch = "startSearchApp"
+    />
     <MainComp />
 
 </template>
@@ -20,26 +22,28 @@ export default {
   data() {
     return {
       apiUrl: 'https://api.themoviedb.org/3/search/movie',
-      api_key: '51a24be7274edb77373ac50e41995b10',
-      language: 'it-IT',
-      query: 'harry potter'
+      apiParams: {
+        api_key: '51a24be7274edb77373ac50e41995b10',
+        language: 'it-IT',
+        query: ''
+      }
       
     }
   },
 
-  mounted() {
-    this.getApi()
-  },
-
   methods: {
+    getTrendingMovies(){
+      axios.get( "https://api.themoviedb.org/3/trending/all/week?api_key=" + this.apiParams.api_key)
+      .then( res=> {
+        console.log(res.data);
+      })
+    },
+
     getApi(){
       axios.get(this.apiUrl, {
-        params: {
-          api_key: this.api_key,
-          language: this.language,
-          query: this.query
+          params: this.apiParams       
         }
-      })
+      )
       
       .then(res => {
         console.log(res.data);
@@ -48,8 +52,17 @@ export default {
       .catch(err => {
         console.log(err);
       })
+    },
+
+    startSearchApp(titleToSearch){
+      this.apiParams.query = titleToSearch;
+      this.getApi();
     }
     
+  },
+
+  mounted() {
+    this.getTrendingMovies()
   }
 
 }
