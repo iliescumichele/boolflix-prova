@@ -4,11 +4,15 @@
       @startSearch = "startSearchApp"
     />
     <MainComp 
+      v-if="movie.length > 0"
       titleCards = "FILM" :items="movie"
     />
     <MainComp 
+      v-if="serieTv.length > 0"
       titleCards = "SERIE TV" :items="serieTv"
     />
+
+    <h1 v-if="movie.length === 0 && serieTv.length > 0">Nessun risultato</h1>
 
 </template>
 
@@ -86,7 +90,10 @@ export default {
 
     startSearchApp(titleToSearch){
       this.apiParams.query = titleToSearch;
-      if (titleToSearch.length > 0) this.getApiMovie();
+      if (titleToSearch.length > 0){
+        this.getApiMovie();
+        this.getApiSeries();
+      }
       else this.getTrendingMovies();
     }
     
