@@ -3,7 +3,9 @@
     <HeaderComp 
       @startSearch = "startSearchApp"
     />
-    <MainComp />
+    <MainComp 
+      titleCards = "FILM" :items="movie"
+    />
 
 </template>
 
@@ -26,7 +28,9 @@ export default {
         api_key: '51a24be7274edb77373ac50e41995b10',
         language: 'it-IT',
         query: ''
-      }
+      },
+      movie: [],
+      serieTv: [],
       
     }
   },
@@ -35,7 +39,8 @@ export default {
     getTrendingMovies(){
       axios.get( "https://api.themoviedb.org/3/trending/all/week?api_key=" + this.apiParams.api_key)
       .then( res=> {
-        console.log(res.data);
+        console.log('TRENDING MOVIES:', res.data);
+        this.movie = res.data.results;
       })
     },
 
@@ -46,7 +51,7 @@ export default {
       )
       
       .then(res => {
-        console.log(res.data);
+        this.movie = res.data.results
       })
 
       .catch(err => {
@@ -68,6 +73,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
