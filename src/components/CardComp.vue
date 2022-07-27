@@ -1,7 +1,7 @@
 <template>
     <div class="card">
-        <h3>{{cardData.original_title }}</h3>
-        <h3>{{ cardData.title }}</h3>
+        <h3>{{cardData.original_title || cardData.original_name}}</h3>
+        <h3>{{ cardData.title || cardData.name}}</h3>
         <p>{{ cardData.original_language }}</p>
         <p>{{ cardData.vote_average }}</p>
         <hr>
@@ -13,7 +13,12 @@ export default {
     name: 'CardComp',
     props: {
         cardData: Object
-    }
+    },
+    data() {
+        return {
+            
+        }
+    },
 }
 </script>
 

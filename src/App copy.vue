@@ -26,8 +26,7 @@ export default {
 
   data() {
     return {
-      apiUrlMovie: 'https://api.themoviedb.org/3/search/movie',
-      apiUrlSeries: 'https://api.themoviedb.org/3/search/tv',
+      apiUrl: 'https://api.themoviedb.org/3/search/movie',
       apiParams: {
         api_key: '51a24be7274edb77373ac50e41995b10',
         language: 'it-IT',
@@ -41,22 +40,15 @@ export default {
 
   methods: {
     getTrendingMovies(){
-      axios.get( "https://api.themoviedb.org/3/trending/movie/week?api_key=" + this.apiParams.api_key)
+      axios.get( "https://api.themoviedb.org/3/trending/all/week?api_key=" + this.apiParams.api_key)
       .then( res=> {
         console.log('TRENDING MOVIES:', res.data);
         this.movie = res.data.results;
       })
     },
-    getTrendingSeries(){
-      axios.get( "https://api.themoviedb.org/3/trending/tv/week?api_key=" + this.apiParams.api_key)
-      .then( res=> {
-        console.log('TRENDING SERIES:', res.data);
-        this.serieTv = res.data.results;
-      })
-    },
 
-    getApiMovie(){
-      axios.get(this.apiUrlMovie, {
+    getApi(){
+      axios.get(this.apiUrl, {
           params: this.apiParams     
         }
       )
@@ -69,24 +61,10 @@ export default {
         console.log(err);
       })
     },
-    getApiSeries(){
-      axios.get(this.apiUrlSeries, {
-          params: this.apiParams     
-        }
-      )
-
-      .then(res => {
-        this.serieTv = res.data.results
-      })
-
-      .catch(err => {
-        console.log(err);
-      })
-    },
 
     startSearchApp(titleToSearch){
       this.apiParams.query = titleToSearch;
-      if (titleToSearch.length > 0) this.getApiMovie();
+      if (titleToSearch.length > 0) this.getApi();
       else this.getTrendingMovies();
     }
     
@@ -94,7 +72,6 @@ export default {
 
   mounted() {
     this.getTrendingMovies()
-    this.getTrendingSeries()
   }
 
 }

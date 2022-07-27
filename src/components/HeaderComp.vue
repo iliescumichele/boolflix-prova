@@ -1,7 +1,7 @@
 <template>
   <header>
     <header>
-        <input @keyup.enter=" $emit( 'startSearch', titleToSearch )" v-model.trim="titleToSearch" type="text">
+        <input @keyup.enter="startSearch" v-model.trim="titleToSearch" type="text" placeholder="Search content">
     </header>
   </header>
 </template>
@@ -12,6 +12,13 @@ export default {
     data() {
         return {
             titleToSearch: ''
+        }
+    },
+
+    methods: {
+        startSearch(){
+            this.$emit( 'startSearch', this.titleToSearch );
+            this.titleToSearch = '';
         }
     },
 }
