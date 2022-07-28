@@ -3,7 +3,9 @@
     <header class="d-flex justify-content-between align-items-center px-3">
 
         <div class="logo">
-            <img src="../assets/img/logo-netflix.png" alt="Logo Boolflix">
+            <a href="">
+                <img src="../assets/img/logo-netflix.png" alt="Logo Boolflix">
+            </a>
         </div>
 
         <div class="inputs d-flex">

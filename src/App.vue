@@ -5,21 +5,26 @@
       @startSearch = "startSearchApp"
     />
 
+    <SliderComp 
+      :posters = "trendigMovie"
+    />
+      
     <div class="container main-wrapper">
+
 
       <MainComp 
         v-if="movie.length > 0"
-        titleCards = "FILM" :items="movie"
+        titleCards = "FILM" :items="movie" :posters="movie"
       />
 
       <MainComp 
         v-if="tv.length > 0"
-        titleCards = "SERIE TV" :items="tv"
+        titleCards = "SERIE TV" :items="tv" :posters="movie"
       />
 
+    <h1 v-if="movie.length === 0 && tv.length === 0">Nessun risultato trovato</h1>
     </div>
 
-    <h1 v-if="movie.length === 0 && tv.length === 0">Nessun risultato</h1>
   </body>
 </template>
 
@@ -27,12 +32,18 @@
 import HeaderComp from './components/HeaderComp.vue'
 import MainComp from './components/MainComp.vue'
 import axios from 'axios'
+import SliderComp from './components/SliderComp.vue'
+// import { Carousel, CarouselItem } from 'vue-l-carousel'
+
 
 export default {
   name: 'App',
   components: {
     HeaderComp,
     MainComp,
+    SliderComp,
+    // 'carousel': Carousel,
+    // 'carouser-item': CarouselItem
   },
 
   data() {
@@ -45,6 +56,7 @@ export default {
       },
       movie: [],
       tv: [],
+      trendigMovie: []
       
     }
   },
@@ -54,7 +66,9 @@ export default {
       axios.get( "https://api.themoviedb.org/3/trending/movie/week?api_key=" + this.apiParams.api_key)
       .then( res=> {
         console.log('TRENDING MOVIES:', res.data);
+        this.trendigMovie = res.data.results;
         this.movie = res.data.results;
+        console.log(this.trendigMovie);
       })
     },
     getTrendingSeries(){
@@ -115,6 +129,7 @@ export default {
   @import '~@fontsource/bebas-neue/index.css';
   @import '~@fortawesome/fontawesome-free/css/all.min.css';
   @import './assets/style/vars';
+
 
   body{
     font-family: "Bebas Neue", cursive;

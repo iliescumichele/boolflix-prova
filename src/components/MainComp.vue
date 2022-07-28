@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <div>
 
         <h1> {{ titleCards }}</h1>
         <div class="cards-wrapper d-flex flex-wrap justify-content-around">
@@ -7,11 +7,12 @@
         </div>
 
 
-    </main>
+    </div>
 </template>
 
 <script>
 import CardComp from './CardComp.vue'
+
 
 export default {
     name: 'MainComp',
@@ -20,10 +21,12 @@ export default {
     },
     props: {
         items: Array,
-        titleCards: String
+        titleCards: String,
+        posters: Array
     }
 }
 </script>
 
 <style lang="scss" scoped>
+
 </style>
