@@ -1,21 +1,26 @@
 <template>
-
+  <body>
+    
     <HeaderComp 
-    @startSearch = "startSearchApp"
-  />
-  <div class="container main-wrapper">
-    <MainComp 
-      v-if="movie.length > 0"
-      titleCards = "FILM" :items="movie"
+      @startSearch = "startSearchApp"
     />
-    <MainComp 
-      v-if="tv.length > 0"
-      titleCards = "SERIE TV" :items="tv"
-    />
-  </div>
 
-  <h1 v-if="movie.length === 0 && tv.length === 0">Nessun risultato</h1>
+    <div class="container main-wrapper">
 
+      <MainComp 
+        v-if="movie.length > 0"
+        titleCards = "FILM" :items="movie"
+      />
+
+      <MainComp 
+        v-if="tv.length > 0"
+        titleCards = "SERIE TV" :items="tv"
+      />
+
+    </div>
+
+    <h1 v-if="movie.length === 0 && tv.length === 0">Nessun risultato</h1>
+  </body>
 </template>
 
 <script>
