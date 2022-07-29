@@ -26,11 +26,13 @@
                     <img class="flag" v-if="flags.includes(cardData.original_language)"
                         :src="require(`../assets/img/${cardData.original_language}.png`)" alt="">
                     <p v-else>Ligua: {{ cardData.original_language }}</p>
-                    <p>{{ cardData.vote_average }}</p>
+                    
 
 
                     <!-- STELLINE -->
                     <div class="">
+                        <span >{{ cardData.vote_average.toFixed(1) }}    </span>
+
                         <i class="fa-star fa-solid"
                             v-for="i in Math.floor( Math.round(cardData.vote_average)/2 )"
                             :key="`a${i}`">
