@@ -3,7 +3,7 @@
 
     <div class="my-card d-flex justify-content-center">
         <flip-flop-card :elevation="7" direction="horizontal" width="300" speed="4">
-            <template slot="back">
+            <template slot="front">
                 <div class="basic-card">
                     
                     <img v-if="cardData.poster_path"
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </template>
-            <template slot="front">
+            <template slot="back">
                 <div class=" basic-card inner p-2">
                     <div class="top">
                         <h3>{{ cardData.title || cardData.name }}</h3>
