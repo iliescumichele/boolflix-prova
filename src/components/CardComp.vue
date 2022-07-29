@@ -3,7 +3,7 @@
 
     <div class="my-card d-flex justify-content-center">
         <flip-flop-card :elevation="7" direction="horizontal" width="300" speed="4">
-            <template slot="front">
+            <template slot="back">
                 <div class="basic-card">
                     
                     <img v-if="cardData.poster_path"
@@ -17,8 +17,8 @@
                     </div>
                 </div>
             </template>
-            <template slot="back">
-                <div class=" basic-card inner p-3">
+            <template slot="front">
+                <div class=" basic-card inner p-2">
                     <div class="top">
                         <h3>{{ cardData.title || cardData.name }}</h3>
                     </div>
@@ -31,11 +31,21 @@
 
                     <!-- STELLINE -->
                     <div class="">
-                        <i class="fa-star"
-                            v-for="i in 5"
-                            :key="i"
-                            :class="i < Math.round(cardData.vote_average/2) ? 'fa-solid' : 'fa-regular' "
-                        ></i>
+                        <i class="fa-star fa-solid"
+                            v-for="i in Math.floor( Math.round(cardData.vote_average)/2 )"
+                            :key="`a${i}`">
+                        </i>
+
+                        <!-- stampo la mezza stella -->
+                        <i v-if="Math.round(cardData.vote_average) % 2" class="fa-solid fa-star-half-stroke"></i> 
+                        
+                        <!-- stampo le stelline vuote
+                            // la differenza di 5 meno stelle piene - modulo 2 del voto reale arrotondato
+                        -->
+                        <i class="fa-star fa-regular"
+                            v-for="i in ( 5 - Math.floor( Math.round(cardData.vote_average)/2 ) - (Math.round(cardData.vote_average) % 2) )"
+                            :key="`b${i}`">
+                        </i>
 
                     </div>
                     <!-- /STELLINE -->
